@@ -955,11 +955,6 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
                 runBounds.origin.y = origins[lineIndex].y + rect.origin.y - fillPadding.bottom - rect.origin.y;
                 runBounds.origin.y -= runDescent;
 
-                // Don't draw higlightedLinkBackground too far to the right
-                if (CGRectGetWidth(runBounds) > width) {
-                    runBounds.size.width = width;
-                }
-
                 CGPathRef path = [[UIBezierPath bezierPathWithRoundedRect:CGRectInset(UIEdgeInsetsInsetRect(runBounds, self.linkBackgroundEdgeInset), lineWidth, lineWidth) cornerRadius:cornerRadius] CGPath];
 
                 CGContextSetLineJoin(c, kCGLineJoinRound);
