@@ -951,7 +951,16 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
                         break;
                 }
 
-                runBounds.origin.x = origins[lineIndex].x + rect.origin.x + xOffset - fillPadding.left - rect.origin.x;
+                if (self.textAlignment == NSTextAlignmentRight) {
+                    //TODO: (JA) fix for incorrect position of box outline for right aligned text...
+                    CGFloat flushFactor = TTTFlushFactorForTextAlignment(self.textAlignment);
+                    CGFloat penOffset = (CGFloat)CTLineGetPenOffsetForFlush((__bridge CTLineRef)line, 1.0, rect.size.width);
+                    CGPoint penOffsetOrigin = CGPointMake(penOffset, origins[lineIndex].y);
+                    runBounds.origin.x = penOffsetOrigin.x + rect.origin.x + xOffset - fillPadding.left - rect.origin.x;
+                }
+                else {
+                    runBounds.origin.x = origins[lineIndex].x + rect.origin.x + xOffset - fillPadding.left - rect.origin.x;
+                }
                 runBounds.origin.y = origins[lineIndex].y + rect.origin.y - fillPadding.bottom - rect.origin.y;
                 runBounds.origin.y -= runDescent;
 
